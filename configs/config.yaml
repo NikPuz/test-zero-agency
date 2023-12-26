@@ -1,0 +1,18 @@
+shutdownTimeout: 5s
+
+server:
+  port: "8080"
+  writeTimeout: 10s
+  readTimeout: 10s
+  idleTimeout: 10s
+
+dataBase:
+  username: 'root'
+  password: 'rpass'
+  address: 'localhost:5432' #news_pg
+  dBName: 'news_db'
+  params: ''
+  maxConnLifetime: 3m
+  maxConnIdleTime: 1m
+  maxOpenCons: 10
+  maxIdleCons: 10
