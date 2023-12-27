@@ -9,7 +9,7 @@ server:
 dataBase:
   username: 'root'
   password: 'rpass'
-  address: 'localhost:5432' #news_pg
+  address: 'news_pg:5432'
   dBName: 'news_db'
   params: ''
   maxConnLifetime: 3m

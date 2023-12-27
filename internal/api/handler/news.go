@@ -27,7 +27,7 @@ func RegisterNewsHandlers(f *fiber.App, service entity.INewsService, logger *zap
 		r.Use(recover.New())
 		r.Use(requestid.New())
 		r.Use(routerMiddleware.ContentTypeJSON)
-		//r.Use(routerMiddleware.DebugLogger)
+		r.Use(routerMiddleware.DebugLogger)
 
 		r.Post("/edit/:id<int>", timeout.NewWithContext(NewsHandler.EditNews, 10*time.Second))
 		r.Get("/list", timeout.NewWithContext(NewsHandler.GetNewsList, 10*time.Second))
@@ -40,14 +40,14 @@ func (h newsHandler) EditNews(c *fiber.Ctx) error {
 		return fiber.ErrBadRequest
 	}
 
-	pointerNews := new(entity.PointerNews)
-	err = c.BodyParser(pointerNews)
+	news := new(entity.News)
+	err = c.BodyParser(news)
 	if err != nil {
 		return fiber.ErrBadRequest
 	}
-	pointerNews.Id = &id
+	news.Id = id
 
-	news, err := h.NewsService.EditNews(c.Context(), pointerNews)
+	news, err = h.NewsService.EditNews(c.Context(), news)
 	if err != nil {
 		return err
 	}
@@ -57,7 +57,7 @@ func (h newsHandler) EditNews(c *fiber.Ctx) error {
 }
 
 func (h newsHandler) GetNewsList(c *fiber.Ctx) error {
-	list := c.QueryInt("list", 0)
+	list := c.QueryInt("list", 1)
 	limit := c.QueryInt("limit", 10)
 
 	news, err := h.NewsService.GetNewsList(c.Context(), list, limit)
